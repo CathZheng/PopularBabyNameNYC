@@ -6,11 +6,11 @@ execute:
   echo: true
 
 book:
-  title: "YOUR PROJECT TITLE"
+  title: "Popular Baby Name in NYC"
   author:
-    - AUTHOR1 (UNI1)
-    - AUTHOR2 (UNI2)
-  repo-url: https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME
+    - Fenghang Yao (fy2308)
+    - Linxuan Zheng (lz2656)
+  repo-url: https://github.com/dorisyao06/PopularBabyNameNYC
   date: today
   page-footer:
     right: |
@@ -25,7 +25,7 @@ book:
 
 format:
   html:
-    theme: cosmo
+    theme: Journal
     code-fold: true
 
 
