@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -142,8 +176,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a></li>
-  <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</a></li>
+  <li><a href="#technical-description" id="toc-technical-description" class="nav-link active" data-scroll-target="#technical-description"><span class="header-section-number">2.1</span> Technical Description</a></li>
+  <li><a href="#research-plan" id="toc-research-plan" class="nav-link" data-scroll-target="#research-plan"><span class="header-section-number">2.2</span> Research plan</a></li>
+  <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.3</span> Missing value analysis</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dorisyao06/PopularBabyNameNYC/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dorisyao06/PopularBabyNameNYC/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -167,11 +202,64 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="description" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
+<section id="technical-description" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="technical-description"><span class="header-section-number">2.1</span> Technical Description</h2>
+<p>The data source for this project is drawn from the NYC OpenData portal, specifically the dataset published by the Department of Health and Mental Hygiene. It is a comprehensive collection of civil birth registration records in New York City. The dataset is updated annually from 2011 to 2019. This dataset is updated on an annual basis, covering a span from 2011 to 2019. The data is presented in a structured format, comprising 57,582 rows and 6 columns. The columns are labeled as <code>Year of Birth</code>, <code>Gender</code>, <code>Ethnicity</code>, <code>Child's First Name</code>, <code>Count</code>, and <code>Rank</code>. <code>Year of Birth</code> is the year when the baby is born. <code>Gender</code> is the sex of the baby. The <code>Ethnicity</code> column reflects the child’s mother’s ethnicity, which adds a layer of socio-cultural context to the data. The <code>Count</code> indicates the number of babies given a particular name in a specific year, while <code>Rank</code> represents the popularity of names in descending order for each year.<br>
+</p>
+<p>Upon preliminary inspection, it has been observed that the dataset contains some identical rows within the same year. We plan to combine these identical rows by adding up their counts.<br>
+</p>
+<p>For importing the data into our analysis environment, we have already downloaded the dataset in a CSV file format from the NYC OpenData portal.<br>
+</p>
+<p>This is the data source page: https://data.cityofnewyork.us/Health/Popular-Baby-Names/25th-nujf</p>
 </section>
-<section id="missing-value-analysis" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</h2>
+<section id="research-plan" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="research-plan"><span class="header-section-number">2.2</span> Research plan</h2>
+<ol type="1">
+<li><p>What are the most popular names overall and within each ethnic group?<br>
+By grouping on the names and aggregate the counts together, it will show the overall popularity of names. Then aggregating the counts of names across the years and within ethnic groups, we can identify the popularity of names within each ethnic group. We plan to use heatmap and other graphs to reveal the patterns of some names that have higher frequency overall across different ethnics group.<br>
+</p></li>
+<li><p>How does the diversity of names compare between genders?<br>
+We first plan to assess the diversity by calculating the number of unique names per gender. We also plan to understand the frequency distribution of names for each gender. A high concentration of babies with a small set of names may indicate lower diversity. We could use chi-square test to determine if the differences in name variaty between genders are statistically significant, not just random.<br>
+</p></li>
+<li><p>Is there a trend in the length of names over the years? Create a new column that represent the length of each name and then calculate the average length of name for each year. Plot the graph and see if there’s an increasing or decreasing pattern in the length of names over the years. Also explore if there are different trends in name length among genders or ethnicity.<br>
+</p></li>
+</ol>
+</section>
+<section id="missing-value-analysis" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.3</span> Missing value analysis</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">'Popular_Baby_Names.csv'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="fu">sapply</span>(df, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df_missing <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">column =</span> <span class="fu">names</span>(missing_values), <span class="at">missing_count =</span> missing_values)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df_missing) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>df_missing</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>              column missing_count
+1      Year.of.Birth             0
+2             Gender             0
+3          Ethnicity             0
+4 Child.s.First.Name             0
+5              Count             0
+6               Rank             0</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_missing, <span class="fu">aes</span>(<span class="at">x =</span> column, <span class="at">y =</span> missing_count)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="fu">max</span>(df_missing<span class="sc">$</span>missing_count) <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Missing Values Per Column"</span>, <span class="at">x =</span> <span class="st">"Column"</span>, <span class="at">y =</span> <span class="st">"Number of Missing Values"</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 </section>
