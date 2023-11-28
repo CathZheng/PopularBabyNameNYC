@@ -1,7 +1,7 @@
 # Introduction
 The choice of a baby's name is often influenced by a variety of factors, including cultural traditions, family heritage, popular culture, and societal trends. In exploring the dataset of popular baby names in New York City, this project aims to uncover patterns and trends in naming practices across different sexes and ethnic groups over time. Understanding these patterns can provide insights into the cultural and social dynamics of the city, reflect the changing demographics, and highlight the influence of cultural events and media. 
 
-The questions we're asking are simple but tell a big story. What are the most popular names overall and within each ethnic group? Do these preferences change from one year to the next? Can we see the influence of big celebrities or major events in these choices? These aren't just names on a page; they're a snapshot of New York's identity, showing us how the city's unique mix of people come together and evolve.
+The questions we're asking are simple but tell a big story. What are the most popular names overall and within each ethnic group? How does the diversity of names compare between genders?Is there a trend in the length of names over the years? These aren't just names on a page; they're a snapshot of New York's identity, showing us how the city's unique mix of people come together and evolve.
 
 Why focus on New York? The city is always changing, and so are the names parents are picking for their kids. This isn't just about looking at lists of names and which ones are in the top ten. It's about looking at the bigger picture, seeing how our world shapes us, right down to the names we choose.
 
