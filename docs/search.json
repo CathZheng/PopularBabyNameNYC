@@ -7,20 +7,6 @@
     "text": "1 Introduction\nThe choice of a baby’s name is often influenced by a variety of factors, including cultural traditions, family heritage, popular culture, and societal trends. In exploring the dataset of popular baby names in New York City, this project aims to uncover patterns and trends in naming practices across different sexes and ethnic groups over time. Understanding these patterns can provide insights into the cultural and social dynamics of the city, reflect the changing demographics, and highlight the influence of cultural events and media.\nThe questions we’re asking are simple but tell a big story. What are the most popular names overall and within each ethnic group? How does the diversity of names compare between genders? Is there a trend in the length of names over the years, gender or ethinic groups? These aren’t just names on a page; they’re a snapshot of New York’s identity, showing us how the city’s unique mix of people come together and evolve.\nWhy focus on New York? The city is always changing, and so are the names parents are picking for their kids. This isn’t just about looking at lists of names and which ones are in the top ten. It’s about looking at the bigger picture, seeing how our world shapes us, right down to the names we choose.\nSo this project is not just for data crunching. It’s a window into real life, into the homes and families that make up New York City. By looking at what parents name their babies, we can see reflections of the city’s diversity, its trends, and its transformations. As a graduate research project, it’s a chance to apply exploratory data analysis to understand something deeply human — the names we give our children and what those names say about the world they’re born into.\nIn this introduction, we’re setting up the journey we’re about to take through the city’s naming patterns. We’re going to look at what the data tells us and try to make sense of it all in a way that’s as interesting and complex as the city itself. Let’s see what the names say, not just to the parents who choose them, but to all of us who are part of this city’s ongoing story."
   },
   {
-    "objectID": "data.html#description",
-    "href": "data.html#description",
-    "title": "2  Data",
-    "section": "2.1 Description",
-    "text": "2.1 Description"
-  },
-  {
-    "objectID": "data.html#missing-value-analysis",
-    "href": "data.html#missing-value-analysis",
-    "title": "2  Data",
-    "section": "2.3 Missing value analysis",
-    "text": "2.3 Missing value analysis\n\n\nCode\nlibrary(ggplot2)\ndf = read.csv('Popular_Baby_Names.csv')\nmissing_values &lt;- sapply(df, function(x) sum(is.na(x)))\ndf_missing &lt;- data.frame(column = names(missing_values), missing_count = missing_values)\nrownames(df_missing) &lt;- NULL\ndf_missing\n\n\n              column missing_count\n1      Year.of.Birth             0\n2             Gender             0\n3          Ethnicity             0\n4 Child.s.First.Name             0\n5              Count             0\n6               Rank             0\n\n\n\n\nCode\nggplot(df_missing, aes(x = column, y = missing_count)) +\n    geom_bar(stat = \"identity\", fill = 'steelblue') + \n    ylim(0,max(df_missing$missing_count) + 1)+\n    labs(title = \"Missing Values Per Column\", x = \"Column\", y = \"Number of Missing Values\") +\n    theme_minimal()"
-  },
-  {
     "objectID": "data.html#technical-description",
     "href": "data.html#technical-description",
     "title": "2  Data",
@@ -33,5 +19,12 @@
     "title": "2  Data",
     "section": "2.2 Research plan",
     "text": "2.2 Research plan\n\nWhat are the most popular names overall and within each ethnic group?\nBy grouping on the names and aggregate the counts together, it will show the overall popularity of names and we will see which names are most popular across all groups. Then aggregating the counts of names across the years and within ethnic groups, we can identify the popularity of names within each ethnic group, offering insights into cultural preferences and traditions in naming. To visually represent these trends, we plan to use heatmaps to show the frequency of names across different ethnic groups and highlight patterns. other graphs like bar charts to compare the popularity of different names over time and across different ethnic groups. \nHow does the diversity of names compare between genders?\nWe first plan to assess the diversity by calculating the number of unique names per gender. We also plan to understand the frequency distribution of names for each gender. A high concentration of babies with a small set of names may indicate lower diversity. We could use chi-square test to determine if the differences in name variaty between genders are statistically significant, not just random. It might also be insightful to examine how the diversity of names has changed over time for each gender. We will use some plots to to see if diversity is increasing, decreasing, or remaining stable.\n\nIs there a trend in the length of names over the years? First, create a new column that represent the length of each name and then calculate the average length of name for each year. Plot the graph and see if there’s an increasing or decreasing pattern in the length of names over the years. Also explore if there are different trends in name length among genders or ethnicity. This can reveal whether naming conventions for boys and girls have evolved differently over time or cultural preferences in name lengths."
+  },
+  {
+    "objectID": "data.html#missing-value-analysis",
+    "href": "data.html#missing-value-analysis",
+    "title": "2  Data",
+    "section": "2.3 Missing value analysis",
+    "text": "2.3 Missing value analysis\n\n\nCode\nlibrary(ggplot2)\n\n\nWarning: package 'ggplot2' was built under R version 4.2.3\n\n\nCode\ndf = read.csv('Popular_Baby_Names.csv')\nmissing_values &lt;- sapply(df, function(x) sum(is.na(x)))\ndf_missing &lt;- data.frame(column = names(missing_values), missing_count = missing_values)\nrownames(df_missing) &lt;- NULL\ndf_missing\n\n\n              column missing_count\n1      Year.of.Birth             0\n2             Gender             0\n3          Ethnicity             0\n4 Child.s.First.Name             0\n5              Count             0\n6               Rank             0\n\n\n\n\nCode\nggplot(df_missing, aes(x = column, y = missing_count)) +\n    geom_bar(stat = \"identity\", fill = 'steelblue') + \n    ylim(0,max(df_missing$missing_count) + 1)+\n    labs(title = \"Missing Values Per Column\", x = \"Column\", y = \"Number of Missing Values\") +\n    theme_minimal()"
   }
 ]
