@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -138,7 +172,20 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#read-data-data-preprocess" id="toc-read-data-data-preprocess" class="nav-link active" data-scroll-target="#read-data-data-preprocess"><span class="header-section-number">3.1</span> Read Data, Data Preprocess</a></li>
+  <li><a href="#for-the-overall-and-within-group-popularity-of-names" id="toc-for-the-overall-and-within-group-popularity-of-names" class="nav-link" data-scroll-target="#for-the-overall-and-within-group-popularity-of-names"><span class="header-section-number">3.2</span> For the Overall and Within-Group Popularity of Names</a>
+  <ul class="collapse">
+  <li><a href="#faceted-histogram-for-name-counts-by-ethnicity" id="toc-faceted-histogram-for-name-counts-by-ethnicity" class="nav-link" data-scroll-target="#faceted-histogram-for-name-counts-by-ethnicity"><span class="header-section-number">3.2.1</span> Faceted histogram for name counts by ethnicity</a></li>
+  <li><a href="#boxplot-to-compare-the-distribution-of-name-popularity-by-different-years" id="toc-boxplot-to-compare-the-distribution-of-name-popularity-by-different-years" class="nav-link" data-scroll-target="#boxplot-to-compare-the-distribution-of-name-popularity-by-different-years"><span class="header-section-number">3.2.2</span> Boxplot to compare the distribution of name popularity by different years</a></li>
+  <li><a href="#ridgeline-plot-for-name-popularity-across-different-years" id="toc-ridgeline-plot-for-name-popularity-across-different-years" class="nav-link" data-scroll-target="#ridgeline-plot-for-name-popularity-across-different-years"><span class="header-section-number">3.2.3</span> Ridgeline plot for name popularity across different years</a></li>
+  <li><a href="#check-the-distribution-of-first-letter-of-first-name" id="toc-check-the-distribution-of-first-letter-of-first-name" class="nav-link" data-scroll-target="#check-the-distribution-of-first-letter-of-first-name"><span class="header-section-number">3.2.4</span> Check the distribution of First letter of First name</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dorisyao06/PopularBabyNameNYC/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dorisyao06/PopularBabyNameNYC/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -160,8 +207,228 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="read-data-data-preprocess" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="read-data-data-preprocess"><span class="header-section-number">3.1</span> Read Data, Data Preprocess</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Popular_Baby_Names.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">Ethnicity =</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">grepl</span>(<span class="st">"BLACK NON HISP"</span>, Ethnicity) <span class="sc">~</span> <span class="st">"BLACK NON HISPANIC"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>              <span class="fu">grepl</span>(<span class="st">"WHITE NON HISP"</span>, Ethnicity) <span class="sc">~</span> <span class="st">"WHITE NON HISPANIC"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>              <span class="fu">grepl</span>(<span class="st">"ASIAN AND PACI"</span>, Ethnicity) <span class="sc">~</span> <span class="st">"ASIAN AND PACIFIC ISLANDER"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            <span class="cn">TRUE</span> <span class="sc">~</span> Ethnicity</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            )) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">Child.s.First.Name =</span> <span class="fu">tolower</span>(Child.s.First.Name)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">group_by</span>(Year.of.Birth, Child.s.First.Name, Gender, Ethnicity) <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">summarize</span>(<span class="at">Total_Count =</span> <span class="fu">sum</span>(Count), <span class="at">.groups=</span><span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">arrange</span>(Year.of.Birth, <span class="fu">desc</span>(Total_Count))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(combined_data, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   Year.of.Birth Child.s.First.Name Gender Ethnicity          Total_Count
+           &lt;int&gt; &lt;chr&gt;              &lt;chr&gt;  &lt;chr&gt;                    &lt;int&gt;
+ 1          2011 jayden             MALE   HISPANIC                  2130
+ 2          2011 isabella           FEMALE HISPANIC                  1986
+ 3          2011 justin             MALE   HISPANIC                  1860
+ 4          2011 jacob              MALE   HISPANIC                  1818
+ 5          2011 michael            MALE   WHITE NON HISPANIC        1752
+ 6          2011 joseph             MALE   WHITE NON HISPANIC        1686
+ 7          2011 matthew            MALE   HISPANIC                  1656
+ 8          2011 david              MALE   WHITE NON HISPANIC        1548
+ 9          2011 angel              MALE   HISPANIC                  1518
+10          2011 christopher        MALE   HISPANIC                  1434</code></pre>
+</div>
+</div>
+</section>
+<section id="for-the-overall-and-within-group-popularity-of-names" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="for-the-overall-and-within-group-popularity-of-names"><span class="header-section-number">3.2</span> For the Overall and Within-Group Popularity of Names</h2>
+<section id="faceted-histogram-for-name-counts-by-ethnicity" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="faceted-histogram-for-name-counts-by-ethnicity"><span class="header-section-number">3.2.1</span> Faceted histogram for name counts by ethnicity</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x=</span>Total_Count)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">30</span>, <span class="at">fill=</span><span class="st">"blue"</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Ethnicity, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Total Count of Names"</span>, <span class="at">y=</span><span class="st">"Frequency"</span>, <span class="at">title=</span><span class="st">"Faceted Histogram of Name Counts by Ethnicity"</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The above histograms show the distribution of the total count of names within different ethnic groups in this dataset. Each small plot (facet) represents a different ethnic group.The x-axis shows the range of the total counts for names. This is how many times a particular name appears in dataset. The y-axis shows the frequency, which is the number of names that fall within each bin of the total counts. For example, if there’s a bar reaching up to 150 on the y-axis at the 500 mark on the x-axis, this means there are 150 different names that have a total count of around 500 in that ethnic group.All histograms show a right-skewed distribution. This means that most names within each ethnic group have a relatively low count, while a few names have a very high count. In other words, there is a diverse range of name popularity across ethnic groups, with most names being relatively rare (low count), and a few names being very common (high count).</p>
+</section>
+<section id="boxplot-to-compare-the-distribution-of-name-popularity-by-different-years" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="boxplot-to-compare-the-distribution-of-name-popularity-by-different-years"><span class="header-section-number">3.2.2</span> Boxplot to compare the distribution of name popularity by different years</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.factor</span>(Year.of.Birth), <span class="at">y=</span>Total_Count)) <span class="sc">+</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Year of Birth"</span>, <span class="at">y=</span><span class="st">"Total Count of Names"</span>, <span class="at">title=</span><span class="st">"Boxplot of Name Popularity by Year of Birth"</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The boxplots compare the distribution of name popularity by year of birth.Each box represents a year from 2011 to 2019. The Y-axis represents the count of how often each name occurs. A higher count indicates more popularity.The years 2011-2014 show greater variability in the total counts of names, as indicated by the longer boxes and whiskers. This suggests there was a wider disparity in name popularity during these years.Years 2015-2019 show less variability with much shorter boxes and whiskers, indicating that name popularity was more consistent within these years — fewer names with very high or very low counts.</p>
+</section>
+<section id="ridgeline-plot-for-name-popularity-across-different-years" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="ridgeline-plot-for-name-popularity-across-different-years"><span class="header-section-number">3.2.3</span> Ridgeline plot for name popularity across different years</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x=</span>Total_Count, <span class="at">y=</span><span class="fu">as.factor</span>(Year.of.Birth), <span class="at">fill=</span><span class="fu">as.factor</span>(Year.of.Birth))) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Total Count of Names"</span>, <span class="at">y=</span><span class="st">"Year of Birth"</span>, <span class="at">title=</span><span class="st">"Ridgeline Plot of Name Popularity Across Years"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 10.8</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The distribution of name counts for each year is skewed to the right, meaning there are a few names with very high counts and many with lower counts.The peak of the ridges appears to shift slightly from year to year, indicating changes in the popularity distribution of names.Some years, like 2018, show a narrower peak, which could suggest a more uniform distribution of name popularity for that year compared to others. We can see ridges of 2011-2014 are much wider than others at the base, it suggests a greater variety of names with lower counts for those years (consistent conclusion with box plot).</p>
+</section>
+<section id="check-the-distribution-of-first-letter-of-first-name" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="check-the-distribution-of-first-letter-of-first-name"><span class="header-section-number">3.2.4</span> Check the distribution of First letter of First name</h3>
+<p>Store each first name’s first letter in column First_Letter</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>combined_data<span class="sc">$</span>First_Letter <span class="ot">&lt;-</span> <span class="fu">substr</span>(combined_data<span class="sc">$</span>Child.s.First.Name, <span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Now, aggregate to get the total count for each first letter, store in a new dataframe</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>first_letter_counts <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(First_Letter) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Count =</span> <span class="fu">sum</span>(Total_Count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(first_letter_counts, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 2
+   First_Letter Total_Count
+   &lt;chr&gt;              &lt;int&gt;
+ 1 a                 300756
+ 2 b                  57961
+ 3 c                 110384
+ 4 d                  81661
+ 5 e                 146610
+ 6 f                  21707
+ 7 g                  55640
+ 8 h                  39644
+ 9 i                  52483
+10 j                 231395</code></pre>
+</div>
+</div>
+<p>Order the Total_Count by descending order</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Order the data frame by Count in descending order</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>first_letter_counts <span class="ot">&lt;-</span> first_letter_counts[<span class="fu">order</span>(<span class="sc">-</span>first_letter_counts<span class="sc">$</span>Total_Count),]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(first_letter_counts, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 2
+   First_Letter Total_Count
+   &lt;chr&gt;              &lt;int&gt;
+ 1 a                 300756
+ 2 j                 231395
+ 3 m                 198012
+ 4 e                 146610
+ 5 s                 145342
+ 6 l                 117731
+ 7 c                 110384
+ 8 d                  81661
+ 9 n                  71296
+10 k                  65935</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(first_letter_counts, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(First_Letter, <span class="sc">-</span>Total_Count), <span class="at">y=</span>Total_Count)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span><span class="st">'lightblue'</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span>  <span class="co"># This will flip the axes to make the histogram horizontal</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"First Letter"</span>) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Total Count"</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Horizontal Histogram of Counts by First Letter of First Name (2011-2019)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This horizontal histogram shows the frequency of the first letter of first names spanning the years 2011 to 2019 in NYC.From the plot, we can see the first letter ‘a’ is the longest, indicating it is the most common first letter for a first name in this dataset. Conversely, the letter ‘u’ has the shortest bar, indicating it is the least common starting letter for first names in this dataset.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>gender_letter_counts <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(First_Letter, Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Count =</span> <span class="fu">sum</span>(Total_Count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>gender_letter_counts<span class="sc">$</span>Gender <span class="ot">&lt;-</span> <span class="fu">factor</span>(gender_letter_counts<span class="sc">$</span>Gender, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"FEMALE"</span>, <span class="st">"MALE"</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>gender_letter_counts<span class="sc">$</span>First_Letter <span class="ot">&lt;-</span> <span class="fu">as.character</span>(gender_letter_counts<span class="sc">$</span>First_Letter)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate a sorting metric, like the median total count for each first letter within each gender</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>sorting_metric <span class="ot">&lt;-</span> gender_letter_counts <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(First_Letter, Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Median_Total_Count =</span> <span class="fu">median</span>(Total_Count)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'First_Letter'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a sorting order to the data frame based on the median total count</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>gender_letter_counts <span class="ot">&lt;-</span> gender_letter_counts <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(sorting_metric, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"First_Letter"</span>, <span class="st">"Gender"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Sort_Order =</span> <span class="fu">rank</span>(<span class="sc">-</span>Median_Total_Count)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Gender, Sort_Order)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Now create the Cleveland dot plot</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gender_letter_counts, <span class="fu">aes</span>(<span class="at">x =</span> Total_Count, <span class="at">y =</span> <span class="fu">reorder</span>(First_Letter, Sort_Order), <span class="at">color =</span> Gender)) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FEMALE"</span> <span class="ot">=</span> <span class="st">"grey"</span>, <span class="st">"MALE"</span> <span class="ot">=</span> <span class="st">"black"</span>)) <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Total Count"</span>, <span class="at">y =</span> <span class="st">"First Letter"</span>, <span class="at">title =</span> <span class="st">"Cleveland Dot Plot of First Letter by Gender (2011-2019)"</span>) <span class="sc">+</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color=</span><span class="st">"grey90"</span>),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the sorting metric columns </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>gender_letter_counts <span class="ot">&lt;-</span> gender_letter_counts <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(Median_Total_Count, Sort_Order))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The above plot is a Cleveland dot plot, which displays the frequency of the first letter of first names, separated by gender for the years 2011-2019. The letter ‘a’ has a high count for both genders, but it is notably higher for males (black dot) than for females (grey dot).The plot allows for easy comparison between genders for each letter. A letter with dots that are far apart indicates a larger disparity between the number of males and females with names starting with that letter.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -417,7 +684,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dorisyao06/PopularBabyNameNYC/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dorisyao06/PopularBabyNameNYC/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>

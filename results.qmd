@@ -1,1 +1,127 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(ggridges)
+library(pheatmap)
+```
+
 # Results
+
+## Read Data, Data Preprocess
+```{r}
+data <- read.csv("Popular_Baby_Names.csv")
+combined_data <- data %>%
+            mutate(Ethnicity = case_when(
+              grepl("BLACK NON HISP", Ethnicity) ~ "BLACK NON HISPANIC",
+              grepl("WHITE NON HISP", Ethnicity) ~ "WHITE NON HISPANIC",
+              grepl("ASIAN AND PACI", Ethnicity) ~ "ASIAN AND PACIFIC ISLANDER",
+            TRUE ~ Ethnicity
+            )) %>% 
+            mutate(Child.s.First.Name = tolower(Child.s.First.Name)) %>% 
+                 group_by(Year.of.Birth, Child.s.First.Name, Gender, Ethnicity) %>%
+                 summarize(Total_Count = sum(Count), .groups="drop") %>%
+                 arrange(Year.of.Birth, desc(Total_Count))
+head(combined_data, 10)
+```
+
+## For the Overall and Within-Group Popularity of Names
+
+### Faceted histogram for name counts by ethnicity
+```{r}
+ggplot(combined_data, aes(x=Total_Count)) +
+  geom_histogram(bins=30, fill="blue", color="black") +
+  facet_wrap(~Ethnicity, scales = "free_y") +
+  labs(x="Total Count of Names", y="Frequency", title="Faceted Histogram of Name Counts by Ethnicity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+The above histograms show the distribution of the total count of names within different ethnic groups in this dataset. Each small plot (facet) represents a different ethnic group.The x-axis shows the range of the total counts for names. This is how many times a particular name appears in dataset. The y-axis shows the frequency, which is the number of names that fall within each bin of the total counts. For example, if there's a bar reaching up to 150 on the y-axis at the 500 mark on the x-axis, this means there are 150 different names that have a total count of around 500 in that ethnic group.All histograms show a right-skewed distribution. This means that most names within each ethnic group have a relatively low count, while a few names have a very high count. In other words, there is a diverse range of name popularity across ethnic groups, with most names being relatively rare (low count), and a few names being very common (high count). 
+
+### Boxplot to compare the distribution of name popularity by different years
+```{r}
+ggplot(combined_data, aes(x=as.factor(Year.of.Birth), y=Total_Count)) + 
+  geom_boxplot() +
+  labs(x="Year of Birth", y="Total Count of Names", title="Boxplot of Name Popularity by Year of Birth") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+The boxplots compare the distribution of name popularity by year of birth.Each box represents a year from 2011 to 2019. The Y-axis represents the count of how often each name occurs. A higher count indicates more popularity.The years 2011-2014 show greater variability in the total counts of names, as indicated by the longer boxes and whiskers. This suggests there was a wider disparity in name popularity during these years.Years 2015-2019 show less variability with much shorter boxes and whiskers, indicating that name popularity was more consistent within these years — fewer names with very high or very low counts.
+
+### Ridgeline plot for name popularity across different years
+```{r}
+ggplot(combined_data, aes(x=Total_Count, y=as.factor(Year.of.Birth), fill=as.factor(Year.of.Birth))) +
+  geom_density_ridges() +
+  labs(x="Total Count of Names", y="Year of Birth", title="Ridgeline Plot of Name Popularity Across Years")
+
+```
+The distribution of name counts for each year is skewed to the right, meaning there are a few names with very high counts and many with lower counts.The peak of the ridges appears to shift slightly from year to year, indicating changes in the popularity distribution of names.Some years, like 2018, show a narrower peak, which could suggest a more uniform distribution of name popularity for that year compared to others. We can see ridges of 2011-2014 are much wider than others at the base, it suggests a greater variety of names with lower counts for those years (consistent conclusion with box plot).
+
+### Check the distribution of First letter of First name
+Store each first name’s first letter in column First_Letter
+```{r}
+combined_data$First_Letter <- substr(combined_data$Child.s.First.Name, 1, 1)
+```
+Now, aggregate to get the total count for each first letter, store in a new dataframe
+```{r}
+first_letter_counts <- combined_data %>%
+  group_by(First_Letter) %>%
+  summarize(Total_Count = sum(Total_Count, na.rm = TRUE))
+head(first_letter_counts, 10)
+```
+Order the Total_Count by descending order
+```{r}
+# Order the data frame by Count in descending order
+first_letter_counts <- first_letter_counts[order(-first_letter_counts$Total_Count),]
+head(first_letter_counts, 10)
+```
+```{r}
+ggplot(first_letter_counts, aes(x=reorder(First_Letter, -Total_Count), y=Total_Count)) +
+  geom_bar(stat="identity", fill='lightblue') +
+  coord_flip() +  # This will flip the axes to make the histogram horizontal
+  xlab("First Letter") +
+  ylab("Total Count") +
+  ggtitle("Horizontal Histogram of Counts by First Letter of First Name (2011-2019)")
+```
+
+This horizontal histogram shows the frequency of the first letter of first names spanning the years 2011 to 2019 in NYC.From the plot, we can see the first letter 'a' is the longest, indicating it is the most common first letter for a first name in this dataset. Conversely, the letter 'u' has the shortest bar, indicating it is the least common starting letter for first names in this dataset. 
+```{r}
+gender_letter_counts <- combined_data %>%
+  group_by(First_Letter, Gender) %>%
+  summarize(Total_Count = sum(Total_Count, na.rm = TRUE), .groups = 'drop') %>%
+  ungroup()
+```
+
+```{r}
+gender_letter_counts$Gender <- factor(gender_letter_counts$Gender, levels = c("FEMALE", "MALE"))
+gender_letter_counts$First_Letter <- as.character(gender_letter_counts$First_Letter)
+
+# Calculate a sorting metric, like the median total count for each first letter within each gender
+sorting_metric <- gender_letter_counts %>%
+  group_by(First_Letter, Gender) %>%
+  summarize(Median_Total_Count = median(Total_Count)) %>%
+  ungroup()
+
+# Add a sorting order to the data frame based on the median total count
+gender_letter_counts <- gender_letter_counts %>%
+  left_join(sorting_metric, by = c("First_Letter", "Gender")) %>%
+  mutate(Sort_Order = rank(-Median_Total_Count)) %>%
+  arrange(Gender, Sort_Order)
+
+# Now create the Cleveland dot plot
+ggplot(gender_letter_counts, aes(x = Total_Count, y = reorder(First_Letter, Sort_Order), color = Gender)) +
+  geom_point() +
+  scale_color_manual(values = c("FEMALE" = "grey", "MALE" = "black")) +
+  theme_minimal() +
+  labs(x = "Total Count", y = "First Letter", title = "Cleveland Dot Plot of First Letter by Gender (2011-2019)") +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_line(color="grey90"),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+# Remove the sorting metric columns 
+gender_letter_counts <- gender_letter_counts %>%
+  select(-c(Median_Total_Count, Sort_Order))
+```
+The above plot is a Cleveland dot plot, which displays the frequency of the first letter of first names, separated by gender for the years 2011-2019. The letter 'a' has a high count for both genders, but it is notably higher for males (black dot) than for females (grey dot).The plot allows for easy comparison between genders for each letter. A letter with dots that are far apart indicates a larger disparity between the number of males and females with names starting with that letter.
