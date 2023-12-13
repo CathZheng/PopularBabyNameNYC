@@ -6,6 +6,8 @@ library(ggplot2)
 library(ggpubr)
 library(ggridges)
 library(pheatmap)
+library(vcd)
+library(gridExtra)
 ```
 
 # Results
@@ -125,3 +127,151 @@ gender_letter_counts <- gender_letter_counts %>%
   select(-c(Median_Total_Count, Sort_Order))
 ```
 The above plot is a Cleveland dot plot, which displays the frequency of the first letter of first names, separated by gender for the years 2011-2019. The letter 'a' has a high count for both genders, but it is notably higher for males (black dot) than for females (grey dot).The plot allows for easy comparison between genders for each letter. A letter with dots that are far apart indicates a larger disparity between the number of males and females with names starting with that letter.
+
+
+## For Comparing the Diversity of Names Between Genders
+### Bar graph for top 50 popular names by gender
+```{r}
+# Filter for top 50 names per gender
+name_freq_by_gender <- combined_data %>%
+  group_by(Gender, Child.s.First.Name) %>%
+  summarise(Total_name_count = sum(Total_Count)) %>%
+  ungroup() %>%
+  arrange(Gender, desc(Total_name_count))
+top_names_by_gender <- name_freq_by_gender %>%
+  arrange(Gender, desc(Total_name_count)) %>%
+  group_by(Gender) %>%
+  slice_max(Total_name_count, n = 50) %>%
+  ungroup()
+total_names_per_gender <- combined_data %>%
+  group_by(Gender) %>%
+  summarize(Total_Names = sum(Total_Count))
+top_names_percentage <- merge(top_names_by_gender, total_names_per_gender, by = "Gender")
+top_names_percentage <- top_names_percentage %>%
+  mutate(Percentage = (Total_name_count / Total_Names) * 100) %>% 
+   arrange(Gender, desc(Percentage)) 
+```
+
+```{r}
+ggplot(top_names_percentage, aes(x = reorder(Child.s.First.Name, Percentage), y = Percentage, fill = Gender)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Percentage of Top 50 Names Relative to Total Count by Gender",
+       x = "Name",
+       y = "Percentage") +
+  theme_minimal() +
+  facet_wrap(~ Gender, scales = "free_y", ncol = 2) + 
+  coord_flip() + 
+  theme(axis.text.y = element_text(size = 8)) +
+  scale_fill_manual(values = c("pink", "blue")) 
+```
+
+We plot the top 50 popular names of each gender. The x-axis is the perctange of people with this name in female or male. The y-axis is the name. Comparing row by row, we can see that male name at each row have a higher percentage in total male name count compared to female name at the same row, meaning that more male have the same name comparing to female. This may indicate that male names have less diversity comparing to female names. 
+
+### The percentage of top 50 names takes up per gender
+```{r}
+top_names_percentage %>% group_by(Gender) %>% summarise(Sum_Percent = sum(Percentage))
+```
+
+From the summarize table, we can also see that these top 50 female names represent 37.79% of all female names, while top 50 male names represent 45.75% of all male name. This means that male names are more concentrated within certain names, showing that female name is more diverse than male names.
+
+
+### Histogram with density curve for name counts by gender
+```{r}
+
+ggplot(name_freq_by_gender, aes(x = Total_name_count, y = ..density..)) +
+  geom_histogram(aes(fill = Gender), alpha = 0.4, bins = 30, position = "identity") +
+  geom_density(aes(color = Gender), size = 1) +
+  facet_wrap(~ Gender) +
+  labs(title = "Histogram with Density Curve of Name Counts by Gender",
+       x = "Total Name Count", y = "Density") +
+  theme_minimal()
+```
+The x-axis of the histogram shows the name count for each name within each gender, and the y-axis represents the frequency of names falling into each count range. Using density curve here provides a smooth estimate of the distribution. Both histogram show a right skewed pattern, meaning that most of the names have relatively lower counts. It shows that there are more female names with lower counts than male names, and female name has a slightly longer tails, meaning that female names have a wider variety. 
+
+## For the trends of Length of the Names over years across gender and ethnicity
+### Scatter Plot of Average Name Length Over Years
+```{r}
+combined_data$Name_Length <- nchar(combined_data$Child.s.First.Name)
+# Over years
+avg_name_length <- combined_data %>%
+  group_by(Year.of.Birth) %>%
+  summarize(Average_Length = mean(Name_Length))
+# For Gender
+avg_name_length_by_gender <- combined_data %>%
+  group_by(Year.of.Birth, Gender) %>%
+  summarize(Average_Length = mean(Name_Length, na.rm = TRUE), .groups = 'drop')
+# For ethnicity
+avg_name_length_by_ethnicity <- combined_data %>%
+  group_by(Year.of.Birth, Ethnicity) %>%
+  summarize(Average_Length = mean(Name_Length, na.rm = TRUE), .groups = 'drop')
+```
+```{r}
+ggplot(avg_name_length, aes(x = Year.of.Birth, y = Average_Length)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  scale_x_continuous(breaks = seq(min(avg_name_length$Year.of.Birth), 
+                                  max(avg_name_length$Year.of.Birth), by = 1)) +
+  theme_minimal() +
+  labs(title = "Average Name Length Over Years", x = "Year of Birth", y = "Average Name Length")
+```
+
+We plot the average length of names each year and from the plot we can see that the average length of names is decreasing from 2011 to 2013, then slightly increase in 2014 and then decreases from 2016 to 2019, with the largest decrease from 2018 to 2019.
+
+### Scatter Plot of Average Name Length by each Ethnicity over years
+```{r}
+ggplot(avg_name_length_by_ethnicity, aes(x = Year.of.Birth, y = Average_Length, color = Ethnicity)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = seq(min(avg_name_length_by_ethnicity$Year.of.Birth),
+                                  max(avg_name_length_by_ethnicity$Year.of.Birth), by = 1)) +
+  theme_minimal() +
+  labs(title = "Average Name Length Over Years by Ethnicity",
+       x = "Year of Birth",
+       y = "Average Name Length") +
+  theme(legend.position = "bottom")
+```
+From the plot, x-axis is the year of birth, with y-axis showing average name length and colored lines represent each ethnicity. We can see that Hispanic has the longest average name length overall, Asian and pacific islander has the lowest average name length. The trend of average name length across each Ethnicity is decreasing over years.
+
+### Scatter Plot of Average Name Length by each Gender over years
+```{r}
+ggplot(avg_name_length_by_gender, aes(x = Year.of.Birth, y = Average_Length, color = Gender)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = seq(min(avg_name_length_by_gender$Year.of.Birth),
+                                  max(avg_name_length_by_gender$Year.of.Birth), by = 1)) +
+  theme_minimal() +
+  labs(title = "Average Name Length Over Years by Gender",
+       x = "Year of Birth",
+       y = "Average Name Length") +
+  theme(legend.position = "bottom")
+
+```
+
+From the plot, x-axis is the year of birth, with y-axis showing average name length and colored lines represent each gender. We can see that female has higher average name length than male from 2011-2019. The overall trend of average name length for both male and female is decreasing.
+
+### Heatmap of Average Name Length by Gender and Ethnicity Over Years
+
+```{r}
+avg_name_length_data <- combined_data %>%
+  group_by(Year.of.Birth, Gender, Ethnicity) %>%
+  summarize(Average_Length = mean(Name_Length, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create the heatmap
+ggplot(avg_name_length_data, aes(x = Year.of.Birth, y = Gender, fill = Average_Length)) +
+  geom_tile() + 
+  facet_wrap(~ Ethnicity, scales = "free_y") +
+  scale_fill_gradient2(low = "black", mid = "white", high = "red", midpoint = 5.8) + 
+  labs(title = "Heatmap of Average Name Length by Gender and Ethnicity Over Years",
+       x = "Year", y = "Gender", fill = "Average Name Length") +
+  scale_x_continuous(breaks = seq(min(avg_name_length_data$Year.of.Birth), 
+                                  max(avg_name_length_data$Year.of.Birth), by = 1)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+The x-axis represents Year of Birth and the y-axis shows Gender, then faceted by Ethnicity and fill with the average name length with low in black, high in red color. From the heatmap, we can see that male Asian and Pacific Islander has the lowest average name length over years, female Hispanic has the longest average name length over years comparing to all. It's worth notifying that female white NonHispanic has high name average name length in 2011 but then keep decreasing to 2019. Same for female black NonHispanic, who had relatively long average name length from 2011 to 2016 and then drop to relatively low in 2019. This sudden changes may related to some socioeconomic change. The average name length of Asian and Pacific Island seem to be all slightly below overall average name length.
+
+
+
