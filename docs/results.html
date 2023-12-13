@@ -184,6 +184,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#ridgeline-plot-for-name-popularity-across-different-years" id="toc-ridgeline-plot-for-name-popularity-across-different-years" class="nav-link" data-scroll-target="#ridgeline-plot-for-name-popularity-across-different-years"><span class="header-section-number">3.2.3</span> Ridgeline plot for name popularity across different years</a></li>
   <li><a href="#check-the-distribution-of-first-letter-of-first-name" id="toc-check-the-distribution-of-first-letter-of-first-name" class="nav-link" data-scroll-target="#check-the-distribution-of-first-letter-of-first-name"><span class="header-section-number">3.2.4</span> Check the distribution of First letter of First name</a></li>
   </ul></li>
+  <li><a href="#for-comparing-the-diversity-of-names-between-genders" id="toc-for-comparing-the-diversity-of-names-between-genders" class="nav-link" data-scroll-target="#for-comparing-the-diversity-of-names-between-genders"><span class="header-section-number">3.3</span> For Comparing the Diversity of Names Between Genders</a>
+  <ul class="collapse">
+  <li><a href="#bar-graph-for-top-50-popular-names-by-gender" id="toc-bar-graph-for-top-50-popular-names-by-gender" class="nav-link" data-scroll-target="#bar-graph-for-top-50-popular-names-by-gender"><span class="header-section-number">3.3.1</span> Bar graph for top 50 popular names by gender</a></li>
+  <li><a href="#the-percentage-of-top-50-names-takes-up-per-gender" id="toc-the-percentage-of-top-50-names-takes-up-per-gender" class="nav-link" data-scroll-target="#the-percentage-of-top-50-names-takes-up-per-gender"><span class="header-section-number">3.3.2</span> The percentage of top 50 names takes up per gender</a></li>
+  <li><a href="#histogram-with-density-curve-for-name-counts-by-gender" id="toc-histogram-with-density-curve-for-name-counts-by-gender" class="nav-link" data-scroll-target="#histogram-with-density-curve-for-name-counts-by-gender"><span class="header-section-number">3.3.3</span> Histogram with density curve for name counts by gender</a></li>
+  </ul></li>
+  <li><a href="#for-the-trends-of-length-of-the-names-over-years-across-gender-and-ethnicity" id="toc-for-the-trends-of-length-of-the-names-over-years-across-gender-and-ethnicity" class="nav-link" data-scroll-target="#for-the-trends-of-length-of-the-names-over-years-across-gender-and-ethnicity"><span class="header-section-number">3.4</span> For the trends of Length of the Names over years across gender and ethnicity</a>
+  <ul class="collapse">
+  <li><a href="#scatter-plot-of-average-name-length-over-years" id="toc-scatter-plot-of-average-name-length-over-years" class="nav-link" data-scroll-target="#scatter-plot-of-average-name-length-over-years"><span class="header-section-number">3.4.1</span> Scatter Plot of Average Name Length Over Years</a></li>
+  <li><a href="#scatter-plot-of-average-name-length-by-each-ethnicity-over-years" id="toc-scatter-plot-of-average-name-length-by-each-ethnicity-over-years" class="nav-link" data-scroll-target="#scatter-plot-of-average-name-length-by-each-ethnicity-over-years"><span class="header-section-number">3.4.2</span> Scatter Plot of Average Name Length by each Ethnicity over years</a></li>
+  <li><a href="#scatter-plot-of-average-name-length-by-each-gender-over-years" id="toc-scatter-plot-of-average-name-length-by-each-gender-over-years" class="nav-link" data-scroll-target="#scatter-plot-of-average-name-length-by-each-gender-over-years"><span class="header-section-number">3.4.3</span> Scatter Plot of Average Name Length by each Gender over years</a></li>
+  <li><a href="#heatmap-of-average-name-length-by-gender-and-ethnicity-over-years" id="toc-heatmap-of-average-name-length-by-gender-and-ethnicity-over-years" class="nav-link" data-scroll-target="#heatmap-of-average-name-length-by-gender-and-ethnicity-over-years"><span class="header-section-number">3.4.4</span> Heatmap of Average Name Length by Gender and Ethnicity Over Years</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dorisyao06/PopularBabyNameNYC/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dorisyao06/PopularBabyNameNYC/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -425,6 +438,218 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>The above plot is a Cleveland dot plot, which displays the frequency of the first letter of first names, separated by gender for the years 2011-2019. The letter ‘a’ has a high count for both genders, but it is notably higher for males (black dot) than for females (grey dot).The plot allows for easy comparison between genders for each letter. A letter with dots that are far apart indicates a larger disparity between the number of males and females with names starting with that letter.</p>
+</section>
+</section>
+<section id="for-comparing-the-diversity-of-names-between-genders" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="for-comparing-the-diversity-of-names-between-genders"><span class="header-section-number">3.3</span> For Comparing the Diversity of Names Between Genders</h2>
+<section id="bar-graph-for-top-50-popular-names-by-gender" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="bar-graph-for-top-50-popular-names-by-gender"><span class="header-section-number">3.3.1</span> Bar graph for top 50 popular names by gender</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for top 50 names per gender</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>name_freq_by_gender <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Gender, Child.s.First.Name) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_name_count =</span> <span class="fu">sum</span>(Total_Count)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Gender, <span class="fu">desc</span>(Total_name_count))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Gender'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>top_names_by_gender <span class="ot">&lt;-</span> name_freq_by_gender <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Gender, <span class="fu">desc</span>(Total_name_count)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(Total_name_count, <span class="at">n =</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>total_names_per_gender <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Names =</span> <span class="fu">sum</span>(Total_Count))</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>top_names_percentage <span class="ot">&lt;-</span> <span class="fu">merge</span>(top_names_by_gender, total_names_per_gender, <span class="at">by =</span> <span class="st">"Gender"</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>top_names_percentage <span class="ot">&lt;-</span> top_names_percentage <span class="sc">%&gt;%</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percentage =</span> (Total_name_count <span class="sc">/</span> Total_Names) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">arrange</span>(Gender, <span class="fu">desc</span>(Percentage)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(top_names_percentage, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Child.s.First.Name, Percentage), <span class="at">y =</span> Percentage, <span class="at">fill =</span> Gender)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Percentage of Top 50 Names Relative to Total Count by Gender"</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Name"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage"</span>) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Gender, <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"pink"</span>, <span class="st">"blue"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We plot the top 50 popular names of each gender. The x-axis is the perctange of people with this name in female or male. The y-axis is the name. Comparing row by row, we can see that male name at each row have a higher percentage in total male name count compared to female name at the same row, meaning that more male have the same name comparing to female. This may indicate that male names have less diversity comparing to female names.</p>
+</section>
+<section id="the-percentage-of-top-50-names-takes-up-per-gender" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="the-percentage-of-top-50-names-takes-up-per-gender"><span class="header-section-number">3.3.2</span> The percentage of top 50 names takes up per gender</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>top_names_percentage <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Sum_Percent =</span> <span class="fu">sum</span>(Percentage))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  Gender Sum_Percent
+  &lt;chr&gt;        &lt;dbl&gt;
+1 FEMALE        37.8
+2 MALE          45.8</code></pre>
+</div>
+</div>
+<p>From the summarize table, we can also see that these top 50 female names represent 37.79% of all female names, while top 50 male names represent 45.75% of all male name. This means that male names are more concentrated within certain names, showing that female name is more diverse than male names.</p>
+</section>
+<section id="histogram-with-density-curve-for-name-counts-by-gender" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="histogram-with-density-curve-for-name-counts-by-gender"><span class="header-section-number">3.3.3</span> Histogram with density curve for name counts by gender</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(name_freq_by_gender, <span class="fu">aes</span>(<span class="at">x =</span> Total_name_count, <span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Gender), <span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">color =</span> Gender), <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Gender) <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Histogram with Density Curve of Name Counts by Gender"</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Total Name Count"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The x-axis of the histogram shows the name count for each name within each gender, and the y-axis represents the frequency of names falling into each count range. Using density curve here provides a smooth estimate of the distribution. Both histogram show a right skewed pattern, meaning that most of the names have relatively lower counts. It shows that there are more female names with lower counts than male names, and female name has a slightly longer tails, meaning that female names have a wider variety.</p>
+</section>
+</section>
+<section id="for-the-trends-of-length-of-the-names-over-years-across-gender-and-ethnicity" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="for-the-trends-of-length-of-the-names-over-years-across-gender-and-ethnicity"><span class="header-section-number">3.4</span> For the trends of Length of the Names over years across gender and ethnicity</h2>
+<section id="scatter-plot-of-average-name-length-over-years" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="scatter-plot-of-average-name-length-over-years"><span class="header-section-number">3.4.1</span> Scatter Plot of Average Name Length Over Years</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>combined_data<span class="sc">$</span>Name_Length <span class="ot">&lt;-</span> <span class="fu">nchar</span>(combined_data<span class="sc">$</span>Child.s.First.Name)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Over years</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>avg_name_length <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year.of.Birth) <span class="sc">%&gt;%</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Length =</span> <span class="fu">mean</span>(Name_Length))</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># For Gender</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>avg_name_length_by_gender <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year.of.Birth, Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Length =</span> <span class="fu">mean</span>(Name_Length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># For ethnicity</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>avg_name_length_by_ethnicity <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year.of.Birth, Ethnicity) <span class="sc">%&gt;%</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Length =</span> <span class="fu">mean</span>(Name_Length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(avg_name_length, <span class="fu">aes</span>(<span class="at">x =</span> Year.of.Birth, <span class="at">y =</span> Average_Length)) <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(avg_name_length<span class="sc">$</span>Year.of.Birth), </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">max</span>(avg_name_length<span class="sc">$</span>Year.of.Birth), <span class="at">by =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Name Length Over Years"</span>, <span class="at">x =</span> <span class="st">"Year of Birth"</span>, <span class="at">y =</span> <span class="st">"Average Name Length"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We plot the average length of names each year and from the plot we can see that the average length of names is decreasing from 2011 to 2013, then slightly increase in 2014 and then decreases from 2016 to 2019, with the largest decrease from 2018 to 2019.</p>
+</section>
+<section id="scatter-plot-of-average-name-length-by-each-ethnicity-over-years" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="scatter-plot-of-average-name-length-by-each-ethnicity-over-years"><span class="header-section-number">3.4.2</span> Scatter Plot of Average Name Length by each Ethnicity over years</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(avg_name_length_by_ethnicity, <span class="fu">aes</span>(<span class="at">x =</span> Year.of.Birth, <span class="at">y =</span> Average_Length, <span class="at">color =</span> Ethnicity)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(avg_name_length_by_ethnicity<span class="sc">$</span>Year.of.Birth),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">max</span>(avg_name_length_by_ethnicity<span class="sc">$</span>Year.of.Birth), <span class="at">by =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Name Length Over Years by Ethnicity"</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year of Birth"</span>,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Name Length"</span>) <span class="sc">+</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>From the plot, x-axis is the year of birth, with y-axis showing average name length and colored lines represent each ethnicity. We can see that Hispanic has the longest average name length overall, Asian and pacific islander has the lowest average name length. The trend of average name length across each Ethnicity is decreasing over years.</p>
+</section>
+<section id="scatter-plot-of-average-name-length-by-each-gender-over-years" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="scatter-plot-of-average-name-length-by-each-gender-over-years"><span class="header-section-number">3.4.3</span> Scatter Plot of Average Name Length by each Gender over years</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(avg_name_length_by_gender, <span class="fu">aes</span>(<span class="at">x =</span> Year.of.Birth, <span class="at">y =</span> Average_Length, <span class="at">color =</span> Gender)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(avg_name_length_by_gender<span class="sc">$</span>Year.of.Birth),</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">max</span>(avg_name_length_by_gender<span class="sc">$</span>Year.of.Birth), <span class="at">by =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Name Length Over Years by Gender"</span>,</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year of Birth"</span>,</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Name Length"</span>) <span class="sc">+</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>From the plot, x-axis is the year of birth, with y-axis showing average name length and colored lines represent each gender. We can see that female has higher average name length than male from 2011-2019. The overall trend of average name length for both male and female is decreasing.</p>
+</section>
+<section id="heatmap-of-average-name-length-by-gender-and-ethnicity-over-years" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="heatmap-of-average-name-length-by-gender-and-ethnicity-over-years"><span class="header-section-number">3.4.4</span> Heatmap of Average Name Length by Gender and Ethnicity Over Years</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>avg_name_length_data <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year.of.Birth, Gender, Ethnicity) <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Average_Length =</span> <span class="fu">mean</span>(Name_Length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Year.of.Birth', 'Gender'. You can override
+using the `.groups` argument.</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the heatmap</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(avg_name_length_data, <span class="fu">aes</span>(<span class="at">x =</span> Year.of.Birth, <span class="at">y =</span> Gender, <span class="at">fill =</span> Average_Length)) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Ethnicity, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"black"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">high =</span> <span class="st">"red"</span>, <span class="at">midpoint =</span> <span class="fl">5.8</span>) <span class="sc">+</span> </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Heatmap of Average Name Length by Gender and Ethnicity Over Years"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Gender"</span>, <span class="at">fill =</span> <span class="st">"Average Name Length"</span>) <span class="sc">+</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(avg_name_length_data<span class="sc">$</span>Year.of.Birth), </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">max</span>(avg_name_length_data<span class="sc">$</span>Year.of.Birth), <span class="at">by =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The x-axis represents Year of Birth and the y-axis shows Gender, then faceted by Ethnicity and fill with the average name length with low in black, high in red color. From the heatmap, we can see that male Asian and Pacific Islander has the lowest average name length over years, female Hispanic has the longest average name length over years comparing to all. It’s worth notifying that female white NonHispanic has high name average name length in 2011 but then keep decreasing to 2019. Same for female black NonHispanic, who had relatively long average name length from 2011 to 2016 and then drop to relatively low in 2019. This sudden changes may related to some socioeconomic change. The average name length of Asian and Pacific Island seem to be all slightly below overall average name length.</p>
 
 
 </section>
