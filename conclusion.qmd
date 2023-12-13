@@ -1,1 +1,11 @@
 # Conclusion
+\
+Through this project, here are several key take away findings:
+
+1. Despite yearly shifts, the overall distribution of name popularity remains consistently right-skewed, indicating that a small number of names dominate the naming landscape each year.
+
+2. The horizontal histogram highlights the prevalence of certain initials for first names, with 'A' being the most common starting letter. This could suggest cultural or linguistic preferences in name choices.
+
+3. The top 50 popular names by gender analysis reveals that common male names represent a larger proportion of the total male population compared to their female counterparts. This suggests less diversity in male names, with a higher tendency for commonality.
+
+4. Across all visualizations, there is a clear indication that names are not only a reflection of individual identity but also of cultural, ethnic, and temporal influences. The decrease in name length over time, the consistency of certain initials, and the variability in name popularity all point to an evolving naming landscape that mirrors societal changes.
